@@ -1,120 +1,84 @@
 # Code Smell and Refactoring Tool
 
 ## Overview
-This project is a Code Smell and Refactoring Tool designed to:
-1. Detect code smells such as Data Class, Blob, Long Method, and Feature Envy.
-2. Provide automated refactoring suggestions to improve code quality.
-3. Collect and analyze user feedback for insights and further improvement.
 
-The project comprises a backend implemented using Flask with a Hugging Face model and OpenAI API, and a React-based frontend.
+This tool is designed to help developers identify and refactor code smells in their software projects. It supports detection of common code smells like Data Class, Blob, Long Method, and Feature Envy and offers automated suggestions for improvements.
 
-**GitHub Repository**: [Code-Smell-and-Refactoring-Tool](https://github.com/manankathrecha/Code-Smell-and-Refactoring-Tool)
+### Features
 
----
+- *Code Smell Detection:* Automatically detects various code smells in your codebase.
+- *Automated Refactoring Suggestions:* Provides suggestions to refactor detected code smells.
+- *User Feedback Analysis:* Collects and analyzes feedback for continuous tool improvement.
 
-## Dependencies
+## Technologies
 
-### Backend
+- *Backend:* Flask, PyTorch, Hugging Face Transformers, OpenAI Python SDK, Flask-CORS
+- *Frontend:* React
+
+## Getting Started
+
+### Prerequisites
+
 - Python 3.9+
-- Flask
-- PyTorch
-- Transformers (Hugging Face)
-- OpenAI Python SDK
-- Flask-CORS
+- Node.js 16+
 
-Install dependencies using:
-```bash
-pip install -r requirements.txt
-Frontend
-Node.js 16+
-React
-Install frontend dependencies using:
+### Installation
 
-bash
-Copy code
-npm install
-Setup Instructions
-Backend Setup
-Clone the repository:
-bash
-Copy code
-git clone https://github.com/manankathrecha/Code-Smell-and-Refactoring-Tool.git
-cd Code-Smell-and-Refactoring-Tool/backend
-Set up the Python virtual environment:
+#### Backend
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/manankathrecha/Code-Smell-and-Refactoring-Tool.git
+   cd Code-Smell-and-Refactoring-Tool/backend
+Setup the Python virtual environment:
+
 bash
 Copy code
 python -m venv .venv
-source .venv/bin/activate  # For Linux/Mac
-.\\.venv\\Scripts\\activate  # For Windows
-Install required dependencies:
+source .venv/bin/activate # Linux/Mac
+.\.venv\Scripts\activate # Windows
+Install dependencies:
+
 bash
 Copy code
 pip install -r requirements.txt
-Set the environment variable for the OpenAI API key:
+Set your OpenAI API key:
+
 bash
 Copy code
-export OPENAI_API_KEY=your_openai_api_key  # Linux/Mac
-set OPENAI_API_KEY=your_openai_api_key    # Windows
+export OPENAI_API_KEY=your_openai_api_key # Linux/Mac
+set OPENAI_API_KEY=your_openai_api_key # Windows
 Run the backend server:
+
 bash
 Copy code
 python app.py
-Frontend Setup
+Frontend
 Navigate to the frontend directory:
+
 bash
 Copy code
 cd ../frontend
 Install dependencies:
+
 bash
 Copy code
 npm install
-Run the frontend development server:
+Start the frontend development server:
+
 bash
 Copy code
 npm start
-The application will start.
-Testing Instructions
-Backend
-Setup Postman
+Usage
+For backend testing, set up a POST request to http://127.0.0.1:5000/refactor with your code sample as JSON. For frontend usage, simply input the code into the provided field and evaluate it.
 
-Download and Install Postman: Postman Download.
-Open Postman and create a new POST request.
-Test the /refactor Endpoint
+Contributing
+Contributions are welcome! Please feel free to submit pull requests or create issues for bugs and feature requests.
 
-Request Setup:
+License
+Distributed under the MIT License. See LICENSE for more information.
 
-Method: POST
-URL: http://127.0.0.1:5000/refactor
-Headers:
-Key: Content-Type
-Value: application/json
-Body:
-Select raw format and set it to JSON.
-Example JSON Body:
-json
+vbnet
 Copy code
-{
-  "code": "def add_numbers(a, b): result = a + b; return result"
-}
-Send the Request
 
-Click the Send button.
-The backend should process the request and return a response.
-Expected Response If everything is set up correctly, you should see a JSON response like this:
-
-json
-Copy code
-{
-  "detected_smell": "long method",
-  "refactoring_suggestions": "Consider breaking the method into smaller modular functions to improve readability."
-}
-Frontend
-Open the application in the browser.
-Paste a sample code snippet in the input field and click the "Analyze Code" button.
-Verify that the detected code smell and refactoring suggestions are displayed correctly.
-Configuration Files
-Backend
-requirements.txt: Contains all the dependencies for the backend.
-apikey.txt: Contains the API key.
-Frontend
-package.json: Manages frontend dependencies and scripts.
+Feel free to adjust the content according to your specific needs or let me know if you need additional sections or modifications!
