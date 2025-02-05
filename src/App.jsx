@@ -1,14 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import './App.css';
 
 function App() {
   const [inputCode, setInputCode] = useState('');
   const [detectedSmell, setDetectedSmell] = useState('');
   const [refactoringSuggestions, setRefactoringSuggestions] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleAnalyzeClick = async () => {
+  const handleAnalyzeClick = useCallback(async () => {
+    if (!inputCode.trim()) {
+      setError("Please enter some code to analyze.");
+      return;
+    }
+
+    setLoading(true);
+    setError(''); // Clear previous errors
+
     try {
-      // Sending the request to Flask backend
       const response = await fetch("http://127.0.0.1:5000/refactor", {
         method: "POST",
         headers: {
@@ -31,48 +40,54 @@ function App() {
         setRefactoringSuggestions("No refactoring suggestions returned.");
       }
     } catch (error) {
+      console.error("Error:", error);
+      setError("An error occurred. Please try again later.");
       setDetectedSmell("Error: " + error.message);
       setRefactoringSuggestions("Error: " + error.message);
-      console.error(error);
+    } finally {
+      setLoading(false);
     }
-  };
+  }, [inputCode]);
 
   return (
     <div className="App">
-      <h1>Code Smell Detection and Refactoring Tool</h1>
+      {/* Left Side: Code Input and Detected Smell */}
+      <div className="left-side">
+        <h1>Code Smell Detector</h1>
+        <p className="subtitle">Paste your code below to detect code smells and get refactoring suggestions.</p>
 
-      {/* Textarea for the user to input code */}
-      <textarea
-        placeholder="Paste your code here..."
-        value={inputCode}
-        onChange={(e) => setInputCode(e.target.value)}
-        rows="10"
-        cols="50"
-      ></textarea>
-
-      {/* Button to trigger the analyze action */}
-      <button onClick={handleAnalyzeClick}>Analyze Code</button>
-
-      {/* Display the detected code smell */}
-      <div className="output">
-        <h3>Detected Code Smell:</h3>
         <textarea
-          readOnly
-          value={detectedSmell}
-          rows="2"
-          cols="50"
+          placeholder="Paste your code here..."
+          value={inputCode}
+          onChange={(e) => setInputCode(e.target.value)}
+          rows="10"
         ></textarea>
+
+        <button onClick={handleAnalyzeClick} disabled={loading} className={loading ? "analyze-button loading" : "analyze-button"}>
+          {loading ? (
+            <div className="spinner"></div>
+          ) : (
+            "Analyze Code"
+          )}
+        </button>
+
+        {error && <p className="error">{error}</p>}
+
+        {/* Detected Code Smell */}
+        <div className="detected-smell">
+          <h2>Detected Code Smell</h2>
+          <div className="output-content">
+            {detectedSmell || "No code smell detected yet."}
+          </div>
+        </div>
       </div>
 
-      {/* Display the refactoring suggestions */}
-      <div className="output">
-        <h3>Refactoring Suggestions:</h3>
-        <textarea
-          readOnly
-          value={refactoringSuggestions}
-          rows="10"
-          cols="50"
-        ></textarea>
+      {/* Right Side: Refactoring Suggestions */}
+      <div className="right-side">
+        <h2>Refactoring Suggestions</h2>
+        <div className="output-content">
+          {refactoringSuggestions || "Refactoring suggestions will appear here after analysis."}
+        </div>
       </div>
     </div>
   );
